@@ -1,0 +1,270 @@
+
+drawerContent = { props => <DrawerContent {...props} />} 
+
+
+const HomeStackScreen =({navigation})=>(
+  <HomeStack.Navigator >
+  <HomeStack.Screen name="Home"  component={HomeScreen} />  
+  </HomeStack.Navigator>
+);
+
+const DetailsStackScreen =({navigation})=>(
+  <DetailStack.Navigator >
+  <DetailStack.Screen name="Details" component={DetailsScreen}  />
+  </DetailStack.Navigator>
+);
+
+
+
+const HomeStack = createStackNavigator();
+const DetailStack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+
+<NavigationContainer>
+         <Drawer.Navigator initialRouteName="Home"  drawerContents = { props => <DrawerContents {...props} />} >  
+          <Drawer.Screen name="Home" component={HomeScreen}></Drawer.Screen>
+          <Drawer.Screen name="Profile" component={ProfileScreen}/>
+          <Drawer.Screen name="Team" component={TeamScreen}/>
+          <Drawer.Screen name="Notifications" component={NotificationScreen}></Drawer.Screen>
+
+
+
+// team first Screen
+
+export default class TeamScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tableHead: ['ID ', 'Team Name', 'Coach',  'State','Players',],
+      tableData: [
+        ['1', 'Team 01', 'Mr. Ekanayaka', '6','6',],
+        ['2', 'Team 02', 'Mr. Shyamika ', 'd','8'],
+        ['3', 'Team 03', 'Mr. Krishantha', 'a','6'],
+        ['4', 'Team 04', 'Mr. Madhushanka', '4','6']
+      ]
+    }     
+  }
+                         
+  _alertIndex(index) {
+    Alert.alert(`This is row ${index + 1}`);
+  }
+ 
+  render() {
+
+    const state = this.state;
+    const element = (data, index) => (
+      <TouchableOpacity onPress={() => this._alertIndex(index)}>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>Remove</Text>
+        </View>
+      </TouchableOpacity>
+    );
+
+    
+ 
+    return (
+
+
+      <ScrollView style={styles.container1}>
+
+        <View style={styles.container1}>
+        <StatusBar backgroundColor="#009387"  />
+
+        <View style={{alignItems:"center", fontSize:40 }}>
+
+        <Animatable.Image 
+               animation="bounceIn" duration={10000}
+                 source={require('../assets/team.jpg')} 
+               resizeMode={'stretch'} style={[styles.logo,{marginTop:2}]} />       
+      </View>
+
+      <View style={styles.container}>
+
+      <Text style={{fontWeight:'bold'}} >Team  Details</Text><Text style={{padding:0.1}}></Text>
+     
+     <View style={styles.infoBoxWrapper}>
+            <View style={[styles.infoBox1, {
+              
+            }]}>
+             <Text style={styles.textinput}>Team Name : </Text>
+            </View>
+            <View style={styles.infoBox2}> 
+            <TextInput placeholder="Your Team Name" style={styles.input}   /> 
+            </View>
+        </View>
+
+        <View style={styles.infoBoxWrapper}>
+            <View style={[styles.infoBox1, {
+              
+            }]}>
+             <Text style={styles.textinput}>Coach : </Text>
+            </View>
+            <View style={styles.infoBox2}> 
+            <TextInput style={styles.input} placeholder="L.K. Karuna" /> 
+            </View>
+        </View>
+
+        <View style={styles.infoBoxWrapper}>
+            <View style={[styles.infoBox1, {
+              
+            }]}>
+             <Text style={styles.textinput}>Sturcture : </Text>
+            </View>
+            <View style={styles.infoBox2}> 
+            <TextInput style={styles.input} placeholder=" Under 15 Female" /> 
+            </View>
+        </View>
+
+        <View style={styles.infoBoxWrapper}>
+            <View style={[styles.infoBox1, {
+              
+            }]}>
+             <Text style={styles.textinput}>Number of Players : </Text>
+            </View>
+            <View style={styles.infoBox2}> 
+            <TextInput style={styles.input} placeholder="7" /> 
+            </View>
+        </View>
+
+          <View>
+          <TouchableOpacity >
+          <LinearGradient colors={['#2f4f4f','#ff1493' ]} style={styles.teambutton}  >
+          <Text> Add a team </Text>  
+          </LinearGradient>
+         </TouchableOpacity></View>
+
+        <Table borderStyle={{borderColor: 'transparent', borderWidth:10 }}>
+          <Row data={state.tableHead} style={styles.head} textStyle={styles.text} borderStyle={{borderWidth:15}} />
+          {
+            state.tableData.map((rowData, index) => (
+              <TableWrapper key={index} style={styles.row}>
+                {
+                  rowData.map((cellData, cellIndex) => (
+                    <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, index) : cellData} textStyle={styles.text}/>
+                  ))
+                }
+              </TableWrapper>
+            ))
+          }
+        </Table>
+      </View></View>
+      </ScrollView>
+    )
+  }
+}
+ 
+const {height} = Dimensions.get("screen");     
+    const height_logo = height*0.20;
+
+const styles = StyleSheet.create({
+  container1: {
+    flex: 1,
+
+  },
+  logo:{
+    width:height_logo*2,
+    height:height_logo,
+  },
+  
+  categoryContainer: {
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 25,
+    marginBottom: 10,
+  },
+  input:{
+    borderWidth:1,
+    borderColor:'green',
+    padding:8,
+   margin:10,
+   width:150,
+   // paddingLeft:50,
+    //paddingRight:150
+  },
+  textin:{
+    borderBottomColor: '#dddddd',
+    borderBottomWidth: 1,
+    borderTopColor: 'black',
+    borderTopWidth: 1,
+    borderRightColor: 'green',
+    borderRightWidth: 1
+  },
+  infoBoxWrapper: {
+    flexDirection: 'row',
+    height: 60,
+  },
+  infoBox1: {
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoBox2: {
+    width: '60%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  teambutton:{
+    width:120,
+    height:40,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:70,
+    flexDirection:'row',
+    margin:5,
+  },
+
+  textInput:{
+    flex:1,
+    backgroundColor:'lightyellow',
+    alignItems:'center',
+    justifyContent:'center',
+    borderColor:'black',
+    marginRight:75,
+    marginTop: Platform.OS === 'ios' ? 0 : -12,
+        paddingLeft: 10,
+        color: '#05375a',
+  },
+  button:{
+
+  },
+  container: { 
+    flex: 1, 
+    padding: 16, 
+    paddingTop: 30, 
+    backgroundColor: '#fff' 
+  },
+  head: { 
+    height: 40,
+    backgroundColor: '#808B97' 
+  },
+  text: {
+    margin: 6 
+    },
+  row: { 
+    flexDirection: 'row',
+    backgroundColor: '#FFF1C1' 
+  },
+  btn: { 
+    width: 58, 
+    height: 18, 
+    backgroundColor: '#78B7BB',  
+    borderRadius: 2 
+  },
+  btnText: {
+     textAlign: 'center', 
+     color: '#fff' 
+    },
+    
+});
+
+
+
+
+
+
+
+
+
+ 
